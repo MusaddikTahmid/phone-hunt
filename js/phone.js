@@ -79,7 +79,7 @@ const showPhoneDetails = (phone) => {
   phoneName.innerText = phone.name;
   const showDetailContainer = document.getElementById("show-detail-container");
   showDetailContainer.innerHTML = `
-  <div class="w-full flex justify-center"><img src="${phone.image}"/></div>
+  <div class="w-full flex justify-center my-5"><img src="${phone.image}"/></div>
   <p class="text-xl"><span class="font-bold">Brand : </span>${phone?.brand}</p>
   <p class="text-xl"><span class="font-bold">Storage : </span>${phone?.mainFeatures?.storage}</p>
   <p class="text-xl"><span class="font-bold">Display : </span>${phone?.mainFeatures?.displaySize}</p>
