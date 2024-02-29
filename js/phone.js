@@ -1,4 +1,4 @@
-const loadPhone = async (searchText, isShowAll) => {
+const loadPhone = async (searchText = "13", isShowAll) => {
   const res = await fetch(
     `https://openapi.programming-hero.com/api/phones?search=${searchText}`
   );
@@ -30,7 +30,7 @@ const displayPhones = (phones, isShowAll) => {
   }
 
   phones.forEach((phone) => {
-    console.log(phone);
+    // console.log(phone);
     // 2: create a div
     const phoneCard = document.createElement("div");
     phoneCard.classList = `card p-4 bg-gray-100 shadow-xl`;
@@ -43,10 +43,11 @@ const displayPhones = (phones, isShowAll) => {
               />
             </figure>
     <div class="card-body text-center">
-        <h2 class="card-title">${phone.phone_name}</h2>
+        <h2 class="text-3xl font-bold">${phone.phone_name}</h2>
         <p>There are many variations of passages of available, but the majority have suffered</p>
         <div class="card-actions justify-center">
-        <button onclick="handleShowDetail('${phone.slug}')" class="btn btn-primary ">Show Details</button>
+        <button onclick="handleShowDetail('${phone.slug}');
+        show_details_modal.showModal()" class="btn btn-primary ">Show Details</button>
         </div>
     </div>
     `;
@@ -59,13 +60,37 @@ const displayPhones = (phones, isShowAll) => {
 
 // show details
 const handleShowDetail = async (id) => {
-  console.log("clicked show details", id);
+  // console.log("clicked show details", id);
   // load Single Phone Data
   const res = await fetch(
     `https://openapi.programming-hero.com/api/phone/${id}`
   );
   const data = await res.json();
-  console.log(data);
+  // console.log(data);
+  const phone = data.data;
+  showPhoneDetails(phone);
+};
+
+// show details
+const showPhoneDetails = (phone) => {
+  console.log(phone);
+
+  const phoneName = document.getElementById("show-detail-phone-name");
+  phoneName.innerText = phone.name;
+  const showDetailContainer = document.getElementById("show-detail-container");
+  showDetailContainer.innerHTML = `
+  <div class="w-full flex justify-center"><img src="${phone.image}"/></div>
+  <p class="text-xl"><span class="font-bold">Brand : </span>${phone?.brand}</p>
+  <p class="text-xl"><span class="font-bold">Storage : </span>${phone?.mainFeatures?.storage}</p>
+  <p class="text-xl"><span class="font-bold">Display : </span>${phone?.mainFeatures?.displaySize}</p>
+  <p class="text-xl"><span class="font-bold">Chipset : </span>${phone?.mainFeatures?.chipSet}</p>
+  <p class="text-xl"><span class="font-bold">Memory : </span>${phone?.mainFeatures?.memory}</p>
+  <p class="text-xl"><span class="font-bold">Slug : </span>${phone?.slug}</p>
+  <p class="text-xl"><span class="font-bold">Release Date : </span>${phone?.releaseDate}</p>
+  <p class="text-xl"><span class="font-bold">GPS : </span>${phone?.others?.GPS}</p>
+  `;
+  // show the modal
+  show_details_modal.showModal();
 };
 
 // handle search button
@@ -99,4 +124,4 @@ const handleShowAll = () => {
   handleSearch(true);
 };
 
-// loadPhone();
+loadPhone();
